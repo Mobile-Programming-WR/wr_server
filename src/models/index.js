@@ -1,3 +1,5 @@
-import { member } from "./member";
+import User from "./user";
 
-export { member };
+export {
+    User,
+};

@@ -27,7 +27,6 @@ const db = async () => {
 }
 const main = async () => {
   try {
-    await db();
     app.use(cors());
     app.use(bodyParser());
     app.use(errorHandleMd);
@@ -36,6 +35,7 @@ const main = async () => {
     // app.use(serve(path.join(__dirname, "../upload")));
     server.listen(3000);
     console.log("WR server started [port:3000]");
+    await db();
   } catch (e) {
     console.log(e);
   }
