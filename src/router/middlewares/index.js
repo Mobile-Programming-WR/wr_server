@@ -1,5 +1,7 @@
 import responseMd from "./responseMd";
+import generateJwtMd from "./generateJwtMd";
 
 export {
-    responseMd,
+  responseMd,
+  generateJwtMd,
 };

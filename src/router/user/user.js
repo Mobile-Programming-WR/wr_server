@@ -1,5 +1,6 @@
 import Boom from "@hapi/boom";
-import Member from "../../models/member";
+import crypto from "crypto";
+import { User } from "models";
 import * as CommonMd from "../middlewares";
 
 export const getDataFromBodyMd = async (ctx, next) => {
@@ -28,18 +29,18 @@ export const validateDataMd = async (ctx, next) => {
 export const isDuplicatedMd = async (ctx, next) => {
   const { id, phone } = ctx.state.reqBody;
 
-  let members;
+  let users;
 
-  members = await Member.findOne({id, phone}).exec();
-  if(members){
+  users = await User.findOne({id, phone}).exec();
+  if(users){
       throw Boom.badRequest("duplicated info");
   }
   await next();
 };
 
-export const saveMemberMd = async (ctx, next) => {
+export const saveUserMd = async (ctx, next) => {
   const { id, password, name, sex, birth, phone } = ctx.state.reqBody;
-  const member = new Member({
+  const user = new user({
     id,
     password,
     name,
@@ -48,10 +49,29 @@ export const saveMemberMd = async (ctx, next) => {
     phone
   });
 
-  await member.save();
+  await user.save();
 
-  ctx.body = member;
+  ctx.body = user;
 
+  await next();
+};
+
+export const comparePasswordMd = async (ctx, next) => {
+  const { id, password } = ctx.state.reqBody;
+  const hash = (password) => {
+    return crypto.createHmac("sha256", process.env.SECRET_KEY).update(password).digest("hex");
+  };
+  const user = User.findOne({id}).exec();
+  if(hash(password)!==user.password);
+
+  const payload = {
+    id: user.id,
+    name: user.name,
+  };
+  ctx.state.payload = {
+    payload,
+    exp: "14d",
+  };
   await next();
 };
 
@@ -59,6 +79,13 @@ export const create = [
   getDataFromBodyMd,
   validateDataMd,
   isDuplicatedMd,
-  saveMemberMd,
+  saveUserMd,
+  CommonMd.responseMd,
+];
+
+export const login = [
+  getDataFromBodyMd,
+  comparePasswordMd,
+  CommonMd.generateJwtMd,
   CommonMd.responseMd,
 ];

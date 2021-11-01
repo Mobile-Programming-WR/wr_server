@@ -1,0 +1,21 @@
+@BASE_URL=http://localhost:3000/api/wr/v1
+
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "dbtkd1801",
+	"password": "asdfasdf",
+	"name": "엄유상",
+	"birth": "2000-03-07",
+	"sex": "male",
+	"phone": "010-4591-8177"
+}
+###
+POST {{BASE_URL}}/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf"
+}
