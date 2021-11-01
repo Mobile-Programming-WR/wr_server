@@ -1,0 +1,38 @@
+{
+  "name": "wr_server",
+  "version": "0.1.0",
+  "description": "2021-2 mobile programming team project",
+  "main": "index.js",
+  "author": "yoosang",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/boom": "^9.1.4",
+    "@koa/router": "^10.1.1",
+    "dotenv": "^10.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-cors": "^0.0.16",
+    "koa-proxy": "^1.0.0-alpha.3",
+    "koa-static": "^5.0.0",
+    "mongoose": "^6.0.12"
+  },
+  "scripts": {
+    "start": "NODE_PATH=src babel-node src/index.js",
+    "start:dev": "NODE_PATH=src nodemon --exec babel-node src/index.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^8.1.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "nodemon": "^2.0.14"
+  }
+}
