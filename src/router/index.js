@@ -1,10 +1,10 @@
 import Router from "@koa/router";
-import member from "./member";
+import user from "./user";
 
 const router = new Router({
-    prefix: "/api/wr/v1",
+  prefix: "/api/wr/v1",
 });
 
-router.use("/member", member.routes());
+router.use("/user", user.routes());
 
 export default router;
