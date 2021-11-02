@@ -57,12 +57,12 @@ export const saveUserMd = async (ctx, next) => {
 
 export const comparePasswordMd = async (ctx, next) => {
   const { id, password } = ctx.state.reqBody;
-  const hash = (pw) => {
-    const hashed = crypto.createHmac("sha256", process.env.SECRET_KEY).update(pw).digest("hex");
-    return hashed;
-  };
-  const user = User.findOne({ id }).exec();
-  if (hash(password) !== user.password) {
+  const user = await User.findOne({ id }).exec();
+  const hashed = await crypto
+    .createHmac("sha256", process.env.SECRET_KEY)
+    .update(password)
+    .digest("hex");
+  if (hashed !== user.password) {
     throw Boom.badRequest("wrong password");
   }
 
