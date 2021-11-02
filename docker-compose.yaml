@@ -1,0 +1,23 @@
+version: "3.1"
+
+services:
+  wr_db:
+    container_name: wr_db
+    image: mongo
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - /Users/eomyoosang/db
+    env_file:
+      - .env
+
+  wr_server:
+    container_name: wr_server:
+    build: ./wr_server
+    image: wr_server:0.1.0
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+       - "3000:3000"
+    depends_on:
+      wr_db
