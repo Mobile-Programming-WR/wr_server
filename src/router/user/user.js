@@ -50,7 +50,7 @@ export const saveUserMd = async (ctx, next) => {
 
   await user.save();
 
-  ctx.body = user;
+  ctx.body = { success: true };
 
   await next();
 };

@@ -15,7 +15,16 @@ Dotenv.config();
 const app = new Koa();
 const server = createServer(app.callback());
 const db = async () => {
-  const res = await mongoose.connect(process.env.MONGO_URI);
+  let mongoUri = "";
+  if (process.env.NODE_ENV === "production") {
+    mongoUri = process.env.MONGO_URI_PROD;
+  } else {
+    mongoUri = process.env.MONGO_URI_DEV;
+  }
+  const res = await mongoose.connect(mongoUri, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  });
 
   if (res) {
     /* eslint-disable no-alert, no-console */
