@@ -20,6 +20,16 @@ Content-Type: application/json
 	"password": "asdfasdf"
 }
 ###
+
+POST {{BASE_URL}}/user/changePw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRidGtkMTgwMSIsIm5hbWUiOiLsl4TsnKDsg4EiLCJpYXQiOjE2MzY0Nzk3MTYsImV4cCI6MTYzNzY4OTMxNn0.vTFV9qcDZvNRutKlkyyoVcHiRj954BBAHsH_Sk517JY
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf1"
+}
+###
 POST http://3.36.49.195:3000/api/wr/v1/user
 Content-Type: application/json
 
@@ -30,4 +40,14 @@ Content-Type: application/json
 	"birth": "2000-03-07",
 	"sex": "male",
 	"phone": "010-4591-8177"
+}
+
+###
+
+POST http://3.36.49.195:3000/api/wr/v1/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf"
 }

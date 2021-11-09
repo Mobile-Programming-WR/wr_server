@@ -77,6 +77,22 @@ export const comparePasswordMd = async (ctx, next) => {
   await next();
 };
 
+const validateTokenMd = async (ctx, next) => {
+  const { id, name } = ctx.state.reqBody;
+  const user = await User.findOne({id, name});
+  if (!user) {
+    Boom.badRequest("Invalid Token");
+  }
+  await next();
+};
+
+const changePasswordMd = async (ctx, next) => {
+  const { id, password } = ctx.state.reqBody;
+  await User.update({ id }, { password });
+  ctx.state.body = { success: true };
+  await next();
+};
+
 export const create = [
   getDataFromBodyMd,
   validateDataMd,
@@ -89,5 +105,13 @@ export const login = [
   getDataFromBodyMd,
   comparePasswordMd,
   CommonMd.generateJwtMd,
+  CommonMd.responseMd,
+];
+
+export const changePw = [
+  getDataFromBodyMd,
+  CommonMd.getTokenMd,
+  validateTokenMd,
+  changePasswordMd,
   CommonMd.responseMd,
 ];
