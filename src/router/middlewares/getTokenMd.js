@@ -18,7 +18,9 @@ const getTokenMd = async (ctx, next) => {
   if (Date.now() / 1000 - decoded.iat > 60 * 10) {
     throw Boom.badRequest("timeout");
   }
-  ctx.state.reqBody = decoded;
+  ctx.state.token = {
+    decoded,
+  };
 
   await next();
 };

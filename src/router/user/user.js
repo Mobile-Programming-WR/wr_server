@@ -50,7 +50,7 @@ export const saveUserMd = async (ctx, next) => {
 
   await user.save();
 
-  ctx.body = { success: true };
+  ctx.state.body = { success: true };
 
   await next();
 };
@@ -67,6 +67,7 @@ export const comparePasswordMd = async (ctx, next) => {
   }
 
   const payload = {
+    // eslint-disable-next-line no-underscore-dangle
     id: user.id,
     name: user.name,
   };
@@ -79,7 +80,7 @@ export const comparePasswordMd = async (ctx, next) => {
 
 const validateTokenMd = async (ctx, next) => {
   const { id, name } = ctx.state.reqBody;
-  const user = await User.findOne({id, name});
+  const user = await User.findOne({ id, name });
   if (!user) {
     Boom.badRequest("Invalid Token");
   }
@@ -88,7 +89,7 @@ const validateTokenMd = async (ctx, next) => {
 
 const changePasswordMd = async (ctx, next) => {
   const { id, password } = ctx.state.reqBody;
-  await User.update({ id }, { password });
+  await User.findOneAndUpdate({ id }, { $set: { password } }).exec();
   ctx.state.body = { success: true };
   await next();
 };
@@ -113,5 +114,14 @@ export const changePw = [
   CommonMd.getTokenMd,
   validateTokenMd,
   changePasswordMd,
+  CommonMd.responseMd,
+];
+
+export const verification = [
+  getDataFromBodyMd,
+  CommonMd.getTokenMd,
+  validateTokenMd,
+  comparePasswordMd,
+  CommonMd.generateJwtMd,
   CommonMd.responseMd,
 ];

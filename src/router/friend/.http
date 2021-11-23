@@ -1,0 +1,62 @@
+@BASE_URL=http://localhost:3000/api/wr/v1
+
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "dbtkd1802",
+	"password": "asdfasdf",
+	"name": "엄유상",
+	"birth": "2000-03-07",
+	"sex": "male",
+	"phone": "010-4591-8178"
+}
+###
+# @name Login
+POST {{BASE_URL}}/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf"
+}
+###
+@Token={{Login.response.body.token}}
+POST {{BASE_URL}}/friend/add
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+
+{
+	"id": "dbtkd1802"
+}
+###
+# @name Login2
+POST {{BASE_URL}}/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1802",
+	"password": "asdfasdf"
+}
+###
+@Token2={{Login2.response.body.token}}
+POST {{BASE_URL}}/friend/accept
+Authorization: Bearer {{Token2}}
+Content-Type: application/json
+
+{
+	"id": "dbtkd1801"
+}
+###
+
+DELETE  {{BASE_URL}}/friend
+Authorization: Bearer {{Token2}}
+Content-Type: application/json
+
+{
+	"id": "dbtkd1801"
+}
+
+###
+GET {{BASE_URL}}/friend/requestlist
+Authorization: Bearer {{Token2}}

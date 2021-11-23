@@ -9,6 +9,14 @@ const userSchema = new Schema({
   sex: String,
   birth: Date,
   phone: String,
+  friends: {
+    type: Array,
+    default: [],
+  },
+  addRequest: {
+    type: Array,
+    default: [],
+  },
 });
 
 export default userSchema;
