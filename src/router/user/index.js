@@ -10,4 +10,7 @@ router.post("/", ...user.create);
 router.post("/login", ...user.login);
 
 router.post("/changePw", ...user.changePw);
+
+router.post("/verify", ...user.verification);
+
 export default router;

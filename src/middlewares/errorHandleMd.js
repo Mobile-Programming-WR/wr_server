@@ -2,6 +2,7 @@ const errorHandleMd = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
+    /* eslint-disable no-alert, no-console */
     console.log(err);
     if (err.isBoom) {
       ctx.status = err.output.statusCode;
@@ -15,10 +16,6 @@ const errorHandleMd = async (ctx, next) => {
         error: "internal server errorr",
         message: "internal server errorr",
       };
-    }
-  } finally {
-    if (ctx.state.conn) {
-      ctx.state.conn.release();
     }
   }
 };

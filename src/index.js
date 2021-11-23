@@ -9,6 +9,7 @@ import { createServer } from "http";
 import mongoose from "mongoose";
 import Dotenv from "dotenv";
 import Router from "./router";
+// eslint-disable-next-line import/named
 import { errorHandleMd } from "./middlewares";
 
 Dotenv.config();

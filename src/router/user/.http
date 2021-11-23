@@ -12,6 +12,7 @@ Content-Type: application/json
 	"phone": "010-4591-8177"
 }
 ###
+# @name Login
 POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
@@ -20,34 +21,54 @@ Content-Type: application/json
 	"password": "asdfasdf"
 }
 ###
-
+@Token={{Login.response.body.token}}
 POST {{BASE_URL}}/user/changePw
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRidGtkMTgwMSIsIm5hbWUiOiLsl4TsnKDsg4EiLCJpYXQiOjE2MzY0Nzk3MTYsImV4cCI6MTYzNzY4OTMxNn0.vTFV9qcDZvNRutKlkyyoVcHiRj954BBAHsH_Sk517JY
+Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
-	"id":"dbtkd1801",
+	"password": "asdfasdf2"
+}
+###
+POST {{BASE_URL}}/user/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRidGtkMTgwMSIsIm5hbWUiOiLsl4TsnKDsg4EiLCJpYXQiOjE2MzY0ODIxMjcsImV4cCI6MTYzNzY5MTcyN30.azFWoW7qmFTyDZgLFOw-LDIGy9BzyttD4wY6CAY6OKA
+Content-Type: application/json
+
+{
 	"password": "asdfasdf1"
 }
 ###
+
 POST http://3.36.49.195:3000/api/wr/v1/user
 Content-Type: application/json
 
 {
-    "id": "dbtkd1801",
+    "id": "dbtkd1802",
 	"password": "asdfasdf",
 	"name": "엄유상",
 	"birth": "2000-03-07",
 	"sex": "male",
-	"phone": "010-4591-8177"
+	"phone": "010-4591-8178"
 }
 
 ###
-
 POST http://3.36.49.195:3000/api/wr/v1/user/login
 Content-Type: application/json
 
 {
 	"id":"dbtkd1801",
 	"password": "asdfasdf"
+}
+
+###
+POST http://3.36.49.195:3000/api/wr/v1/user
+Content-Type: application/json
+
+{
+    "id": "test",
+	"password": "test",
+	"name": "김예빈",
+	"birth": "2000-08-25",
+	"sex": "female",
+	"phone": "010-1234-5678"
 }
