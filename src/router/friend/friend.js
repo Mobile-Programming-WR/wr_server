@@ -81,9 +81,18 @@ const getRequestListMd = async (ctx, next) => {
   await next();
 };
 
+const getIdFromPathMd = async (ctx, next) => {
+  const { id } = ctx.params;
+  ctx.state.reqBody = {
+    ...ctx.state.reqBody,
+    id,
+  };
+  await next();
+};
+
 export const add = [
   CommonMd.getTokenMd,
-  getDataFromBodyMd,
+  getIdFromPathMd,
   validateIdMd,
   sendAddRequestMd,
   CommonMd.responseMd,
@@ -91,7 +100,7 @@ export const add = [
 
 export const accept = [
   CommonMd.getTokenMd,
-  getDataFromBodyMd,
+  getIdFromPathMd,
   validateIdMd,
   acceptRequestMd,
   CommonMd.responseMd,
@@ -99,7 +108,7 @@ export const accept = [
 
 export const remove = [
   CommonMd.getTokenMd,
-  getDataFromBodyMd,
+  getIdFromPathMd,
   validateIdMd,
   removeFriendMd,
   CommonMd.responseMd,

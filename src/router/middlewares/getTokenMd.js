@@ -15,7 +15,7 @@ const getTokenMd = async (ctx, next) => {
   const accessToken = ctx.headers.authorization.split(" ")[1];
   if (!accessToken) Boom.badRequest("invalid token");
   const decoded = await decodeToken(accessToken);
-  if (Date.now() / 1000 - decoded.iat > 60 * 10) {
+  if (Date.now() / 1000 - decoded.iat > 60 * 60 * 24 * 14) {
     throw Boom.badRequest("timeout");
   }
   ctx.state.token = {
