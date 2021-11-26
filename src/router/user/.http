@@ -12,6 +12,18 @@ Content-Type: application/json
 	"phone": "010-4591-8177"
 }
 ###
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test",
+	"password": "asdfasdf",
+	"name": "김예빈",
+	"birth": "2000-03-07",
+	"sex": "female",
+	"phone": "010-4591-8179"
+}
+###
 # @name Login
 POST {{BASE_URL}}/user/login
 Content-Type: application/json
@@ -72,3 +84,7 @@ Content-Type: application/json
 	"sex": "female",
 	"phone": "010-1234-5678"
 }
+
+###
+
+POST http://3.36.49.195:3000/api/wr/v1/user
