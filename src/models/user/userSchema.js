@@ -21,6 +21,10 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
+  competition: {
+    type: Array,
+    default: [],
+  },
 });
 
 export default userSchema;

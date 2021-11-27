@@ -97,6 +97,35 @@ const getIdFromPathMd = async (ctx, next) => {
   await next();
 };
 
+const sendAddCompetitionMd = async (ctx, next) => {
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id });
+
+}
+
+const deleteFriendMd = async (ctx, next) => {
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  await User.findOneAndUpdate({ id }, {
+    $pull:{
+      friends: { id: decoded },
+      competition: {id: decoded },
+    },
+  });
+  await User.findOneAndUpdate({ id: decoded.id }, {
+    $pull:{
+      friends: { id },
+      competition: { id },
+    },
+  });
+  ctx.state.body = {
+    ...ctx.state.body,
+    success: true,
+  };
+  await next();
+}
+
 export const add = [
   CommonMd.getTokenMd,
   getIdFromPathMd,
@@ -133,9 +162,15 @@ export const readRequest = [
   CommonMd.responseMd,
 ];
 
+export const addCompetition = [
+  CommonMd.getTokenMd,
+  sendAddCompetitionMd,
+  CommonMd.responseMd,
+];
+
 export const remove = [
   CommonMd.getTokenMd,
   getIdFromPathMd,
-  removeFriendMd,
+  deleteFriendMd,
   CommonMd.responseMd,
 ];
