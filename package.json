@@ -16,7 +16,8 @@
     "koa-cors": "^0.0.16",
     "koa-proxy": "^1.0.0-alpha.3",
     "koa-static": "^5.0.0",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "node-cron": "^3.0.0"
   },
   "scripts": {
     "start": "NODE_PATH=src babel-node src/index.js",
