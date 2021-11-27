@@ -49,6 +49,33 @@ const saveRecordMd = async (ctx, next) => {
 };
 
 const readMyRecordsMd = async (ctx, next) => {
+  const { decoded } = ctx.state.token;
+
+  const rows = await Record.find({ id: decoded.id }).exec();
+  ctx.state.body = {
+    success: true,
+    results: rows,
+  };
+  await next();
+};
+
+const getUidByPathMd = async (ctx, next) => {
+  const { uid } = ctx.params;
+  ctx.state.reqBody = {
+    ...ctx.state.reqBody,
+    uid,
+  };
+  await next();
+};
+
+const readRecordByUid = async (ctx, next) => {
+  const { uid } = ctx.state.reqBody;
+  const { id } = ctx.state.token.decoded;
+  const record = await Record.findOne({ _id: uid, id }).exec();
+  ctx.state.body = {
+    success: true,
+    result: record,
+  };
   await next();
 };
 
@@ -62,5 +89,12 @@ export const create = [
 export const readMy = [
   CommonMd.getTokenMd,
   readMyRecordsMd,
+  CommonMd.responseMd,
+];
+
+export const readByUid = [
+  CommonMd.getTokenMd,
+  getUidByPathMd,
+  readRecordByUid,
   CommonMd.responseMd,
 ];

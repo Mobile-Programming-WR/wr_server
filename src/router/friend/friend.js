@@ -2,11 +2,11 @@ import Boom, { badRequest } from "@hapi/boom";
 import { User } from "models";
 import * as CommonMd from "../middlewares";
 
-const getDataFromBodyMd = async (ctx, next) => {
-  const { id } = ctx.request.body;
-  ctx.state.reqBody = { id };
-  await next();
-};
+// const getDataFromBodyMd = async (ctx, next) => {
+//   const { id } = ctx.request.body;
+//   ctx.state.reqBody = { id };
+//   await next();
+// };
 
 const validateIdMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
