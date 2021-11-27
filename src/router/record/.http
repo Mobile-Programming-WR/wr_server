@@ -6,8 +6,9 @@ Content-Type: application/json
 
 {
 	"id":"dbtkd1801",
-	"password": "asdfasdf"
+	"password":"asdfasdf"
 }
+
 ###
 @Token={{Login.response.body.token}}
 POST {{BASE_URL}}/record

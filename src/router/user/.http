@@ -32,7 +32,9 @@ Content-Type: application/json
 	"id":"dbtkd1801",
 	"password": "asdfasdf"
 }
+
 ###
+
 @Token={{Login.response.body.token}}
 POST {{BASE_URL}}/user/changePw
 Authorization: Bearer {{Token}}
@@ -57,10 +59,10 @@ Content-Type: application/json
 {
     "id": "test",
 	"password": "asdfasdf",
-	"name": "김예빈",
+	"name": "엄유상",
 	"birth": "2000-03-07",
-	"sex": "female",
-	"phone": "010-4591-8179"
+	"sex": "male",
+	"phone": "010-4591-8177"
 }
 
 ###
