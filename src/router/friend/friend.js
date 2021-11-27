@@ -10,9 +10,13 @@ import * as CommonMd from "../middlewares";
 
 const validateIdMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
   const user = await User.findOne({ id });
   if (user === null) {
-    throw Boom.badRequest("invalid id");
+    throw Boom.badRequest("id doesn't exist");
+  }
+  if (user.friends.filter((item) => item.name === decoded.id).length>0) {
+    throw Boom.badRequest("already friend");
   }
   await next();
 };
@@ -24,7 +28,10 @@ const sendAddRequestMd = async (ctx, next) => {
     id: decoded.id,
     name: decoded.name,
   };
-  User.findOneAndUpdate({ id }, { $push: { addRequest: friend } }).exec();
+  const user = user.findOne({ id });
+  if(user.addRequest.filter((item) => item.id === decoded.id) === 0) {
+    User.findOneAndUpdate({ id }, { $push: { addRequest: friend } }).exec();
+  }
   ctx.state.body = {
     success: true,
   };
@@ -123,5 +130,12 @@ export const readFriends = [
 export const readRequest = [
   CommonMd.getTokenMd,
   getRequestListMd,
+  CommonMd.responseMd,
+];
+
+export const remove = [
+  CommonMd.getTokenMd,
+  getIdFromPathMd,
+  removeFriendMd,
   CommonMd.responseMd,
 ];
