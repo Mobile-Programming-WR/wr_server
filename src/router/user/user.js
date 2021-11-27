@@ -30,8 +30,9 @@ export const validateDataMd = async (ctx, next) => {
 export const isDuplicatedMd = async (ctx, next) => {
   const { id, phone } = ctx.state.reqBody;
 
-  const users = await User.findOne({ id, phone }).exec();
-  if (users) {
+  const usersById = await User.findOne({ id }).exec();
+  const usersByPhone = await User.findOne({ phone }).exec();
+  if (usersById || usersByPhone) {
     throw Boom.badRequest("duplicated info");
   }
   await next();

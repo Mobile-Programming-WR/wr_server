@@ -57,7 +57,7 @@ POST http://3.36.49.195:3000/api/wr/v1/user
 Content-Type: application/json
 
 {
-    "id": "test",
+    "id": "dbtkd1801",
 	"password": "asdfasdf",
 	"name": "엄유상",
 	"birth": "2000-03-07",
