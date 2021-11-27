@@ -21,6 +21,10 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
+  distance: {
+    type: String,
+    default: "0",
+  },
 });
 
 export default userSchema;

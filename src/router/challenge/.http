@@ -1,0 +1,14 @@
+@BASE_URL=http://localhost:3000/api/wr/v1
+
+# @name Login
+POST {{BASE_URL}}/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf"
+}
+###
+@Token={{Login.response.body.token}}
+GET {{BASE_URL}}/challenge
+Authorization: Bearer {{Token}}

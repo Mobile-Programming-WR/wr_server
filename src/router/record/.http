@@ -36,4 +36,4 @@ Authorization: Bearer {{Token}}
 ###
 @UID={{List.response.body.results[0]._id}}
 GET {{BASE_URL}}/record/read/{{UID}}
-Authorization: Bearer {{Token}}
+Authorization: Bearer {{Token}} 

@@ -13,6 +13,10 @@ const recordSchema = new Schema({
     type: Array,
     default: [],
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export default recordSchema;
