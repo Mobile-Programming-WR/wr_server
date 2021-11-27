@@ -11,6 +11,8 @@ import Dotenv from "dotenv";
 import Router from "./router";
 // eslint-disable-next-line import/named
 import { errorHandleMd } from "./middlewares";
+import scheduler from "./scheduler";
+// import scheduler from "./scheduler";
 
 Dotenv.config();
 const app = new Koa();
@@ -34,18 +36,19 @@ const db = async () => {
     console.log("Mongodb Connection fault");
   }
 };
+
 const main = async () => {
   try {
     app.use(cors());
     app.use(bodyParser());
     app.use(errorHandleMd);
-    // app.use(jwtMd);
     app.use(Router.routes()).use(Router.allowedMethods());
     // app.use(serve(path.join(__dirname, "../upload")));
     server.listen(3000);
     /* eslint-disable no-alert, no-console */
     console.log("WR server started [port:3000]");
     await db();
+    await scheduler();
   } catch (e) {
     console.log(e);
   }

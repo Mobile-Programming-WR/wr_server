@@ -1,5 +1,6 @@
 import { Boom } from "@hapi/boom";
 import { Record } from "models";
+import { User } from "../../models";
 import * as CommonMd from "../middlewares";
 
 const getDataFromBodyMd = async (ctx, next) => {
@@ -32,7 +33,7 @@ const saveRecordMd = async (ctx, next) => {
     cadence,
     coordinates,
   } = ctx.state.reqBody;
-  const record = new Record({
+  const record = await new Record({
     id: decoded.id,
     time,
     distance,
@@ -72,6 +73,9 @@ const readRecordByUid = async (ctx, next) => {
   const { uid } = ctx.state.reqBody;
   const { id } = ctx.state.token.decoded;
   const record = await Record.findOne({ _id: uid, id }).exec();
+  if (!record) {
+    throw Boom.badRequest("Invalid uid");
+  }
   ctx.state.body = {
     success: true,
     result: record,
@@ -79,9 +83,24 @@ const readRecordByUid = async (ctx, next) => {
   await next();
 };
 
+const updateUserDistanceMd = async (ctx, next) => {
+  const { id } = ctx.state.token.decoded;
+  const { distance } = ctx.state.reqBody;
+  const user = await User.findOne({ id });
+  console.log(user.distance);
+  await User.findOneAndUpdate({ id },
+    {
+      $set: {
+        distance: Number(user.distance) + Number(distance),
+      },
+    }).exec();
+  await next();
+};
+
 export const create = [
   CommonMd.getTokenMd,
   getDataFromBodyMd,
+  updateUserDistanceMd,
   saveRecordMd,
   CommonMd.responseMd,
 ];
