@@ -30,8 +30,9 @@ export const validateDataMd = async (ctx, next) => {
 export const isDuplicatedMd = async (ctx, next) => {
   const { id, phone } = ctx.state.reqBody;
 
-  const users = await User.findOne({ id, phone }).exec();
-  if (users) {
+  const usersById = await User.findOne({ id }).exec();
+  const usersByPhone = await User.findOne({ phone }).exec();
+  if (usersById || usersByPhone) {
     throw Boom.badRequest("duplicated info");
   }
   await next();
@@ -57,11 +58,18 @@ export const saveUserMd = async (ctx, next) => {
 
 export const comparePasswordMd = async (ctx, next) => {
   const { id, password } = ctx.state.reqBody;
+  console.log(id);
   const user = await User.findOne({ id }).exec();
+  console.log(user);
+
+  if (user === null) {
+    throw Boom.badRequest("invalid id");
+  }
   const hashed = await crypto
     .createHmac("sha256", process.env.SECRET_KEY)
     .update(password)
     .digest("hex");
+  console.log(hashed);
   if (hashed !== user.password) {
     throw Boom.badRequest("wrong password");
   }
