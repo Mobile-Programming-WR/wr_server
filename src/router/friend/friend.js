@@ -1,12 +1,7 @@
-import Boom, { badRequest } from "@hapi/boom";
+/* eslint-disable consistent-return */
+import Boom from "@hapi/boom";
 import { User } from "models";
 import * as CommonMd from "../middlewares";
-
-// const getDataFromBodyMd = async (ctx, next) => {
-//   const { id } = ctx.request.body;
-//   ctx.state.reqBody = { id };
-//   await next();
-// };
 
 const validateIdMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
@@ -15,7 +10,7 @@ const validateIdMd = async (ctx, next) => {
   if (user === null) {
     throw Boom.badRequest("id doesn't exist");
   }
-  if (user.friends.filter((item) => item.name === decoded.id).length>0) {
+  if (user.friends.filter((item) => item.name === decoded.id).length > 0) {
     throw Boom.badRequest("already friend");
   }
   await next();
@@ -28,10 +23,7 @@ const sendAddRequestMd = async (ctx, next) => {
     id: decoded.id,
     name: decoded.name,
   };
-  const user = user.findOne({ id });
-  if(user.addRequest.filter((item) => item.id === decoded.id) === 0) {
-    User.findOneAndUpdate({ id }, { $push: { addRequest: friend } }).exec();
-  }
+  User.findOneAndUpdate({ id }, { $push: { addRequest: friend } }).exec();
   ctx.state.body = {
     success: true,
   };
@@ -41,16 +33,12 @@ const sendAddRequestMd = async (ctx, next) => {
 const acceptRequestMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
   const { decoded } = ctx.state.token;
-  const user = await User.findOne({ id: decoded.id, name: decoded.name });
-  const addRequest = user.addRequest.find((x) => x.id === id);
-  if (addRequest === undefined) {
-    throw badRequest("no add request");
-  }
+  const user = await User.findOne({ id });
   await User.findOneAndUpdate(
     { id: decoded.id },
     {
-      $pull: { addRequest: { id: addRequest.id } },
-      $push: { friends: addRequest },
+      $pull: { addRequest: { id } },
+      $push: { friends: { id: user.id, name: user.name } },
     },
   ).exec();
   const friend = { id: decoded.id, name: decoded.name };
@@ -62,8 +50,8 @@ const acceptRequestMd = async (ctx, next) => {
 const removeFriendMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
   const { decoded } = ctx.state.token;
-  await User.findOneAndUpdate({ id: decoded.id }, { $pull: { friends: { id } } });
-  await User.findOneAndUpdate({ id }, { $pull: { friends: { id: decoded.id } } });
+  await User.findOneAndUpdate({ id: decoded.id }, { $pull: { friends: { id } } }).exec();
+  await User.findOneAndUpdate({ id }, { $pull: { friends: { id: decoded.id } } }).exec();
   ctx.state.body = { success: true };
   await next();
 };
@@ -100,36 +88,152 @@ const getIdFromPathMd = async (ctx, next) => {
 const sendAddCompetitionMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
   const { decoded } = ctx.state.token;
-  const user = await User.findOne({ id });
-
-}
-
-const deleteFriendMd = async (ctx, next) => {
-  const { id } = ctx.state.reqBody;
-  const { decoded } = ctx.state.token;
-  await User.findOneAndUpdate({ id }, {
-    $pull:{
-      friends: { id: decoded },
-      competition: {id: decoded },
-    },
-  });
-  await User.findOneAndUpdate({ id: decoded.id }, {
-    $pull:{
-      friends: { id },
-      competition: { id },
-    },
-  });
+  const friend = {
+    id: decoded.id,
+    name: decoded.name,
+  };
+  await User.findOneAndUpdate({ id }, { $push: { competitionRequest: friend } });
   ctx.state.body = {
-    ...ctx.state.body,
     success: true,
   };
   await next();
-}
+};
+
+const checkBeforeAddMd = async (ctx, next) => {
+  // 이미 친구인지 검사
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id });
+  const checkFriend = (element) => {
+    if (element.id === decoded.id && element.name === decoded.name) {
+      return true;
+    }
+  };
+  if (user.friends.some(checkFriend)) {
+    throw Boom.badRequest("Already friend");
+  }
+  // 이미 신청했는지 검사
+  if (user.addRequest.some(checkFriend)) {
+    throw Boom.badRequest("Already sended");
+  }
+  await next();
+};
+
+const checkBeforeAcceptMd = async (ctx, next) => {
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id });
+  // 이미 친구인지 검사
+  const checkFriend = (element) => {
+    if (element.id === decoded.id && element.name === decoded.name) {
+      return true;
+    }
+  };
+  if (user.friends.some(checkFriend)) {
+    throw Boom.badRequest("Already friend");
+  }
+  await next();
+};
+
+const checkBeforeRemove = async (ctx, next) => {
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id });
+  // 친구인지 검사
+  const checkFriend = (element) => {
+    if (element.id === decoded.id && element.name === decoded.name) {
+      return true;
+    }
+  };
+  if (!user.friends.some(checkFriend)) {
+    throw Boom.badRequest("no friend");
+  }
+  await next();
+};
+
+const checkBeforeAddCompetitionMd = async (ctx, next) => {
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id });
+  // 친구인지 검사
+  // eslint-disable-next-line consistent-return
+  const checkFriend = (element) => {
+    if (element.id === decoded.id && element.name === decoded.name) {
+      return true;
+    }
+  };
+  if (!user.friends.some(checkFriend)) {
+    throw Boom.badRequest("not friend");
+  }
+  // 이미 경쟁중인지 검사
+  if (user.competition.some(checkFriend)) {
+    throw Boom.badRequest("Already in competition");
+  }
+  // 이미 신청했는지 검사
+  if (user.competitionRequest.some(checkFriend)) {
+    throw Boom.badRequest("Already sended");
+  }
+  await next();
+};
+
+const checkBeforeAcceptCompetitionMd = async (ctx, next) => {
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id });
+  // 이미 경쟁중인지 검사
+  const checkFriend = (element) => {
+    if (element.id === decoded.id && element.name === decoded.name) {
+      return true;
+    }
+  };
+  if (user.competition.some(checkFriend)) {
+    throw Boom.badRequest("Already in competition");
+  }
+  await next();
+};
+
+const acceptCompetitionMd = async (ctx, next) => {
+  const { id } = ctx.state.reqBody;
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id });
+  await User.findOneAndUpdate(
+    { id: decoded.id },
+    {
+      $pull: { competitionRequest: { id } },
+      $push: { competition: { id: user.id, name: user.name } },
+    },
+  ).exec();
+  const friend = { id: decoded.id, name: decoded.name };
+  await User.findOneAndUpdate({ id }, { $push: { competition: friend } }).exec();
+  ctx.state.body = { success: true };
+  await next();
+};
+
+const readCompetitionRequestMd = async (ctx, next) => {
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id: decoded.id });
+  ctx.state.body = {
+    success: true,
+    results: user.competitionRequest,
+  };
+  await next();
+};
+
+const readCompetitionMd = async (ctx, next) => {
+  const { decoded } = ctx.state.token;
+  const user = await User.findOne({ id: decoded.id });
+  ctx.state.body = {
+    success: true,
+    results: user.competition,
+  };
+  await next();
+};
 
 export const add = [
   CommonMd.getTokenMd,
   getIdFromPathMd,
   validateIdMd,
+  checkBeforeAddMd,
   sendAddRequestMd,
   CommonMd.responseMd,
 ];
@@ -138,6 +242,7 @@ export const accept = [
   CommonMd.getTokenMd,
   getIdFromPathMd,
   validateIdMd,
+  checkBeforeAcceptMd,
   acceptRequestMd,
   CommonMd.responseMd,
 ];
@@ -146,6 +251,7 @@ export const remove = [
   CommonMd.getTokenMd,
   getIdFromPathMd,
   validateIdMd,
+  checkBeforeRemove,
   removeFriendMd,
   CommonMd.responseMd,
 ];
@@ -164,13 +270,30 @@ export const readRequest = [
 
 export const addCompetition = [
   CommonMd.getTokenMd,
+  getIdFromPathMd,
+  validateIdMd,
+  checkBeforeAddCompetitionMd,
   sendAddCompetitionMd,
   CommonMd.responseMd,
 ];
 
-export const remove = [
+export const acceptCompetition = [
   CommonMd.getTokenMd,
   getIdFromPathMd,
-  deleteFriendMd,
+  validateIdMd,
+  checkBeforeAcceptCompetitionMd,
+  acceptCompetitionMd,
+  CommonMd.responseMd,
+];
+
+export const readCompetitionRequest = [
+  CommonMd.getTokenMd,
+  readCompetitionRequestMd,
+  CommonMd.responseMd,
+];
+
+export const readCompetition = [
+  CommonMd.getTokenMd,
+  readCompetitionMd,
   CommonMd.responseMd,
 ];

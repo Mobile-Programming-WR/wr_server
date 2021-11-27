@@ -19,6 +19,14 @@ router.get("/requestlist", ...friend.readRequest);
 
 // 친구 삭제
 router.delete("/", ...friend.remove);
+
+// 겨루기 신청 조회
+router.get("/competition/requestlist", ...friend.readCompetitionRequest);
+// 겨루기 상대 조회
+router.get("/competition/list", ...friend.readCompetition);
+// 겨루기 수락
+router.get("/competition/accept/:id", ...friend.acceptCompetition);
 // 겨루기 신청
-router.get("/competition/:id", ...friend.requestCompetition);
+router.get("/competition/:id", ...friend.addCompetition);
+
 export default router;
