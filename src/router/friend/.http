@@ -1,15 +1,15 @@
 @BASE_URL=http://localhost:3000/api/wr/v1
-
+# @BASE_URL=http://3.36.49.195:3000/api/wr/v1
 POST {{BASE_URL}}/user
 Content-Type: application/json
 
 {
-    "id": "dbtkd1802",
+    "id": "dbtkd1801",
 	"password": "asdfasdf",
 	"name": "엄유상",
 	"birth": "2000-03-07",
 	"sex": "male",
-	"phone": "010-4591-8178"
+	"phone": "010-4591-8177"
 }
 ###
 # @name Login
@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 ###
 @Token={{Login.response.body.token}}
-POST {{BASE_URL}}/friend/add
+POST {{BASE_URL}}/friend/add/
 Authorization: Bearer {{Token}}
 Content-Type: application/json
 
@@ -49,13 +49,9 @@ Content-Type: application/json
 }
 ###
 
-DELETE  {{BASE_URL}}/friend
+DELETE  {{BASE_URL}}/friend/dbtkd1801
 Authorization: Bearer {{Token2}}
 Content-Type: application/json
-
-{
-	"id": "dbtkd1801"
-}
 
 ###
 GET {{BASE_URL}}/friend/requestlist
