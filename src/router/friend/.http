@@ -12,6 +12,18 @@ Content-Type: application/json
 	"phone": "010-4591-8177"
 }
 ###
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test1",
+	"password": "asdfasdf",
+	"name": "우사인",
+	"birth": "2000-03-07",
+	"sex": "male",
+	"phone": "010-4591-8178"
+}
+###
 # @name Login
 POST {{BASE_URL}}/user/login
 Content-Type: application/json
@@ -22,37 +34,70 @@ Content-Type: application/json
 }
 ###
 @Token={{Login.response.body.token}}
-POST {{BASE_URL}}/friend/add/
+GET {{BASE_URL}}/friend/add/test1
 Authorization: Bearer {{Token}}
-Content-Type: application/json
 
-{
-	"id": "dbtkd1802"
-}
 ###
 # @name Login2
 POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
 {
-	"id":"dbtkd1802",
+	"id":"test1",
 	"password": "asdfasdf"
 }
 ###
 @Token2={{Login2.response.body.token}}
-POST {{BASE_URL}}/friend/accept
+GET {{BASE_URL}}/friend/accept/dbtkd1801
 Authorization: Bearer {{Token2}}
+
+###
+# @name Login2
+POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
 {
-	"id": "dbtkd1801"
+	"id":"test1",
+	"password": "asdfasdf"
 }
 ###
+@Token2={{Login2.response.body.token}}
+GET {{BASE_URL}}/friend/competition/dbtkd1801
+Authorization: Bearer {{Token2}}
 
-DELETE  {{BASE_URL}}/friend/dbtkd1801
+###
+# @name Login
+POST {{BASE_URL}}/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf"
+}
+###
+@Token={{Login.response.body.token}}
+
+GET {{BASE_URL}}/friend/competition/accept/test1
+Authorization: Bearer {{Token}}
+
+###
+DELETE  {{BASE_URL}}/friend
 Authorization: Bearer {{Token2}}
 Content-Type: application/json
 
 ###
 GET {{BASE_URL}}/friend/requestlist
 Authorization: Bearer {{Token2}}
+
+###
+
+@Token={{Login.response.body.token}}
+
+GET {{BASE_URL}}/friend/competition/list
+Authorization: Bearer {{Token}}
+
+###
+
+@Token_competition_request_list={{Login.response.body.token}}
+GET {{BASE_URL}}/friend/competition/requestlist
+Authorization: Bearer {{Token_competition_request_list}}

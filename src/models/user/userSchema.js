@@ -21,6 +21,9 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
+  competition: {
+    type: Array,
+    default: [],
   distance: {
     type: String,
     default: "0",
