@@ -58,8 +58,9 @@ export const saveUserMd = async (ctx, next) => {
 export const comparePasswordMd = async (ctx, next) => {
   const { id, password } = ctx.state.reqBody;
   const user = await User.findOne({ id }).exec();
+  console.log(user);
+
   if (user === undefined) {
-    console.log(user);
     throw Boom.badRequest("invalid id");
   }
   const hashed = await crypto

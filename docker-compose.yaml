@@ -16,7 +16,7 @@ services:
   wr_server:
     container_name: wr_server
     build: .
-    image: wr_server:0.2.6
+    image: wr_server:0.2.7
     environment:
       - TZ=Asia/Seoul
     ports:
