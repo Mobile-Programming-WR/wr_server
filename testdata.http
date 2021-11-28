@@ -1,0 +1,133 @@
+@BASE_URL=http://3.36.49.195:3000/api/wr/v1
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "dbtkd1801",
+	"password": "asdfasdf",
+	"name": "엄유상",
+	"birth": "2000-03-07",
+	"sex": "male",
+	"phone": "010-4591-8177"
+}
+###
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test",
+	"password": "asdfasdf",
+	"name": "김예빈",
+	"birth": "2000-08-25",
+	"sex": "female",
+	"phone": "010-1234-1234"
+}
+
+### User 1
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test1",
+	"password": "asdfasdf",
+	"name": "우사인",
+	"birth": "2000-01-01",
+	"sex": "male",
+	"phone": "010-1111-1111"
+}
+### User2
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test2",
+	"password": "asdfasdf",
+	"name": "홍길동",
+	"birth": "2000-01-01",
+	"sex": "male",
+	"phone": "010-1111-1112"
+}
+### User3
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test3",
+	"password": "asdfasdf",
+	"name": "김영희",
+	"birth": "2000-01-01",
+	"sex": "female",
+	"phone": "010-1111-1113"
+}
+### User4
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test4",
+	"password": "asdfasdf",
+	"name": "김준재",
+	"birth": "2000-01-01",
+	"sex": "male",
+	"phone": "010-1111-1114"
+}
+### User5
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test5",
+	"password": "asdfasdf",
+	"name": "에일리",
+	"birth": "2000-01-01",
+	"sex": "female",
+	"phone": "010-1111-1115"
+}
+### User6
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test6",
+	"password": "asdfasdf",
+	"name": "김볼트",
+	"birth": "2000-01-01",
+	"sex": "male",
+	"phone": "010-1111-1116"
+}
+### User7
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test7",
+	"password": "asdfasdf",
+	"name": "김철수",
+	"birth": "2000-01-01",
+	"sex": "male",
+	"phone": "010-1111-1117"
+}
+### User8
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test8",
+	"password": "asdfasdf",
+	"name": "문진혁",
+	"birth": "2000-01-01",
+	"sex": "male",
+	"phone": "010-1111-1118"
+}
+### User9
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test7",
+	"password": "asdfasdf",
+	"name": "아이유",
+	"birth": "2000-01-01",
+	"sex": "female",
+	"phone": "010-1111-1119"
+}

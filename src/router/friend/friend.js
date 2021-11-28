@@ -50,8 +50,13 @@ const acceptRequestMd = async (ctx, next) => {
 const removeFriendMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
   const { decoded } = ctx.state.token;
-  await User.findOneAndUpdate({ id: decoded.id }, { $pull: { friends: { id } } }).exec();
-  await User.findOneAndUpdate({ id }, { $pull: { friends: { id: decoded.id } } }).exec();
+  await User.findOneAndUpdate({ id: decoded.id }, {
+    $pull: { friends: { id }, addRequest: { id }, competition: { id } },
+  }).exec();
+  await User.findOneAndUpdate({ id }, {
+    // eslint-disable-next-line max-len
+    $pull: { friends: { id: decoded.id }, addRequest: { id: decoded.id }, competition: { id: decoded.id } },
+  }).exec();
   ctx.state.body = { success: true };
   await next();
 };
