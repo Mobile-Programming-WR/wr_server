@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 ###
 @Token={{Login.response.body.token}}
-GET {{BASE_URL}}/friend/add/test1
+GET {{BASE_URL}}/friend/add/test
 Authorization: Bearer {{Token}}
 
 ###
@@ -43,7 +43,7 @@ POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
 {
-	"id":"test1",
+	"id":"test",
 	"password": "asdfasdf"
 }
 ###
