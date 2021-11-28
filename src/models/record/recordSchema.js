@@ -4,11 +4,11 @@ const { Schema } = mongoose;
 
 const recordSchema = new Schema({
   id: String,
-  time: String,
-  distance: String,
-  steps: String,
-  pace: String,
-  cadence: String,
+  time: Number,
+  distance: Number,
+  steps: Number,
+  pace: Number,
+  cadence: Number,
   coordinates: {
     type: Array,
     default: [],
