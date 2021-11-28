@@ -1,0 +1,92 @@
+@BASE_URL=http://localhost:3000/api/wr/v1
+
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "dbtkd1801",
+	"password": "asdfasdf",
+	"name": "엄유상",
+	"birth": "2000-03-07",
+	"sex": "male",
+	"phone": "010-4591-8177"
+}
+###
+POST {{BASE_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test",
+	"password": "asdfasdf",
+	"name": "김예빈",
+	"birth": "2000-03-07",
+	"sex": "female",
+	"phone": "010-4591-8179"
+}
+###
+# @name Login
+POST {{BASE_URL}}/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf"
+}
+
+###
+
+@Token={{Login.response.body.token}}
+POST {{BASE_URL}}/user/changePw
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+
+{
+	"password": "asdfasdf2"
+}
+###
+POST {{BASE_URL}}/user/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRidGtkMTgwMSIsIm5hbWUiOiLsl4TsnKDsg4EiLCJpYXQiOjE2MzY0ODIxMjcsImV4cCI6MTYzNzY5MTcyN30.azFWoW7qmFTyDZgLFOw-LDIGy9BzyttD4wY6CAY6OKA
+Content-Type: application/json
+
+{
+	"password": "asdfasdf1"
+}
+###
+
+POST http://3.36.49.195:3000/api/wr/v1/user
+Content-Type: application/json
+
+{
+    "id": "dbtkd1801",
+	"password": "asdfasdf",
+	"name": "엄유상",
+	"birth": "2000-03-07",
+	"sex": "male",
+	"phone": "010-4591-8177"
+}
+
+###
+POST http://3.36.49.195:3000/api/wr/v1/user/login
+Content-Type: application/json
+
+{
+	"id":"dbtkd1801",
+	"password": "asdfasdf"
+}
+
+###
+POST http://3.36.49.195:3000/api/wr/v1/user
+Content-Type: application/json
+
+{
+    "id": "test",
+	"password": "test",
+	"name": "김예빈",
+	"birth": "2000-08-25",
+	"sex": "female",
+	"phone": "010-1234-5678"
+}
+
+###
+
+POST http://3.36.49.195:3000/api/wr/v1/user
