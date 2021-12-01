@@ -1,11 +1,11 @@
-# @BASE_URL=http://3.36.49.195:3000/api/wr/v1
-@BASE_URL = http://localhost:3000/api/wr/v1
+@BASE_URL=http://3.36.49.195:3000/api/wr/v1
+# @BASE_URL = http://localhost:3000/api/wr/v1
 # @name Login
 POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
 {
-	"id":"dbtkd1801",
+	"id":"test",
 	"password":"asdfasdf"
 }
 
