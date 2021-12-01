@@ -27,14 +27,33 @@ const getIdFromPathMd = async (ctx, next) => {
 
 const getMyRecordMd = async (ctx, next) => {
   const { decoded } = ctx.state.token;
-  const myRecord = await Record.find({ id: decoded.id }).select("distance steps time date");
-  const myInfo = myRecord.length !== 0
+  const records = await Record.find({ id: decoded.id }).select("distance steps time date");
+
+  const myRecord = [];
+  // 오늘부터 10일 전까지 더하기
+  for (let i = 0; i < 10; i += 1) {
+    const d = new Date();
+    const dayOfMonth = d.getDate();
+    d.setDate(dayOfMonth - i);
+    const sum = records.filter((item) => item.date.getDate() === d.getDate()).length !== 0
+      ? records.filter((item) => item.date.getDate() === d.getDate())
+      // eslint-disable-next-line no-param-reassign, no-return-assign
+        .reduce((result, item) => result = {
+          distance: result.distance + item.distance,
+          steps: result.steps + item.steps,
+          time: result.time + item.time,
+        }) : { distance: 0, steps: 0, time: 0 };
+    sum.date = d;
+    myRecord[i] = sum;
+  }
   // eslint-disable-next-line no-param-reassign, no-return-assign
-    ? myRecord.reduce((result, item) => result = {
-      distance: result.distance + item.distance,
-      steps: result.steps + item.steps,
-      time: result.time + item.time,
-    }) : { distance: 0, steps: 0, time: 0 };
+  const myInfo = myRecord.reduce((result, item) => result = {
+    distance: result.distance + item.distance,
+    steps: result.steps + item.steps,
+    time: result.time + item.time,
+  });
+  const user = await User.findOne({ id: decoded.id });
+  myInfo.name = user.name;
   ctx.state.body = {
     ...ctx.state.body,
     success: true,
@@ -46,14 +65,32 @@ const getMyRecordMd = async (ctx, next) => {
 
 const getFriendRecordMd = async (ctx, next) => {
   const { id } = ctx.state.reqBody;
-  const friendRecord = await Record.find({ id }).select("distance steps time date");
-  const friendInfo = friendRecord.length !== 0
+  const records = await Record.find({ id }).select("distance steps time date");
+
+  const friendRecord = [];
+  for (let i = 0; i < 10; i += 1) {
+    const d = new Date();
+    const dayOfMonth = d.getDate();
+    d.setDate(dayOfMonth - i);
+    const sum = records.filter((item) => item.date.getDate() === d.getDate()).length !== 0
+      ? records.filter((item) => item.date.getDate() === d.getDate())
+      // eslint-disable-next-line no-param-reassign, no-return-assign
+        .reduce((result, item) => result = {
+          distance: result.distance + item.distance,
+          steps: result.steps + item.steps,
+          time: result.time + item.time,
+        }) : { distance: 0, steps: 0, time: 0 };
+    sum.date = d;
+    friendRecord[i] = sum;
+  }
   // eslint-disable-next-line no-param-reassign, no-return-assign
-    ? friendRecord.reduce((result, item) => result = {
-      distance: result.distance + item.distance,
-      steps: result.steps + item.steps,
-      time: result.time + item.time,
-    }) : { distance: 0, steps: 0, time: 0 };
+  const friendInfo = friendRecord.reduce((result, item) => result = {
+    distance: result.distance + item.distance,
+    steps: result.steps + item.steps,
+    time: result.time + item.time,
+  });
+  const user = await User.findOne({ id });
+  friendInfo.name = user.name;
   ctx.state.body = {
     ...ctx.state.body,
     friendInfo,

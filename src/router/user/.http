@@ -1,4 +1,5 @@
-@BASE_URL=http://localhost:3000/api/wr/v1
+# @BASE_URL=http://localhost:3000/api/wr/v1
+@BASE_URL=http://13.124.10.74:3000/api/wr/v1
 
 POST {{BASE_URL}}/user
 Content-Type: application/json
