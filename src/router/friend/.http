@@ -1,5 +1,5 @@
-@BASE_URL=http://localhost:3000/api/wr/v1
-# @BASE_URL=http://3.36.49.195:3000/api/wr/v1
+# @BASE_URL=http://localhost:3000/api/wr/v1
+@BASE_URL=http://3.36.49.195:3000/api/wr/v1
 POST {{BASE_URL}}/user
 Content-Type: application/json
 
@@ -57,7 +57,7 @@ POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
 {
-	"id":"test1",
+	"id":"test",
 	"password": "asdfasdf"
 }
 ###
@@ -77,7 +77,7 @@ Content-Type: application/json
 ###
 @Token={{Login.response.body.token}}
 
-GET {{BASE_URL}}/friend/competition/accept/test1
+GET {{BASE_URL}}/friend/competition/accept/test
 Authorization: Bearer {{Token}}
 
 ###
