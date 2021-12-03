@@ -1,4 +1,4 @@
-@BASE_URL=http://localhost:3000/api/wr/v1
+@BASE_URL=http://3.34.136.108:3000/api/wr/v1
 
 # @name Login
 POST {{BASE_URL}}/user/login
@@ -12,5 +12,5 @@ Content-Type: application/json
 ###
 
 @Token={{Login.response.body.token}}
-GET {{BASE_URL}}/competition/test
+GET {{BASE_URL}}/competition/test1
 Authorization: Bearer {{Token}}
