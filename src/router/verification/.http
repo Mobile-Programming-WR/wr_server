@@ -1,0 +1,19 @@
+@BASE_URL=http://localhost:3000/api/wr/v1
+
+POST {{BASE_URL}}/verify/sms
+Content-Type: application/json
+
+{
+    "phone" : "01045918177"
+}
+
+###
+
+POST {{BASE_URL}}/verify/sms/verify
+Content-Type: application/json
+
+{
+    "phone": "01045918177",
+    "verifyCode": "612143"
+}
+

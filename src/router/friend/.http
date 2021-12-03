@@ -1,5 +1,5 @@
 # @BASE_URL=http://localhost:3000/api/wr/v1
-@BASE_URL=http://3.36.49.195:3000/api/wr/v1
+@BASE_URL=http://3.34.136.108:3000/api/wr/v1
 POST {{BASE_URL}}/user
 Content-Type: application/json
 
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 ###
 @Token={{Login.response.body.token}}
-GET {{BASE_URL}}/friend/add/test
+GET {{BASE_URL}}/friend/add/test1
 Authorization: Bearer {{Token}}
 
 ###
@@ -43,7 +43,7 @@ POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
 {
-	"id":"test",
+	"id":"test1",
 	"password": "asdfasdf"
 }
 ###
@@ -57,7 +57,7 @@ POST {{BASE_URL}}/user/login
 Content-Type: application/json
 
 {
-	"id":"test",
+	"id":"test1",
 	"password": "asdfasdf"
 }
 ###
