@@ -83,6 +83,10 @@ export const comparePasswordMd = async (ctx, next) => {
     payload,
     exp: "14d",
   };
+  ctx.state.body = {
+    ...ctx.state.body,
+    name: user.name,
+  };
   await next();
 };
 
