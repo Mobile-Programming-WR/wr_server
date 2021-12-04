@@ -52,7 +52,7 @@ const saveRecordMd = async (ctx, next) => {
 const readMyRecordsMd = async (ctx, next) => {
   const { decoded } = ctx.state.token;
 
-  const rows = await Record.find({ id: decoded.id }).exec();
+  const rows = await Record.find({ id: decoded.id }).sort({ "date": -1 }).exec();
   ctx.state.body = {
     success: true,
     results: rows,
